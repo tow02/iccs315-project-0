@@ -46,19 +46,25 @@ void *find_min_and_max(void *arg) {
 
   // arg[0]:sub_arr; arg[1]:length;
   package_subarray *psa = arg;
-
   int *subarray = psa[0].sub_arr;
-
   int length = psa[0].length;
 
-  // printf("length = %d\n", length);
-
-  // pthread_mutex_lock(&mutex1);
   for (int i = 0; i < length; i++) {
-    if (subarray[i] < current_min) current_min = subarray[i];
-    if (subarray[i] > current_max) current_max = subarray[i];
+    if (subarray[i] < ret.min) {
+      ret.min = subarray[i];
+    }
+    if (subarray[i] > ret.max) {
+      ret.max = subarray[i];
+    }
   }
-  // pthread_mutex_unlock(&mutex1);
+  pthread_mutex_lock(&mutex1);
+  if (current_min > ret.min) {
+    current_min = ret.min;
+  }
+  if (current_max < ret.max) {
+    current_max = ret.max;
+  }
+  pthread_mutex_unlock(&mutex1);
 }
 
 int main(int argc, char** argv) {
