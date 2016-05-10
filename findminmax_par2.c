@@ -85,19 +85,12 @@ int main(int argc, char** argv) {
 
   // Start work
   gettimeofday(&tval_before, NULL);
-  // result_t r = find_min_and_max(arr, n);
 
   // create threads
   for (int i=0; i<nprocs; i++) {
     int sub_n = n/nprocs;
-    int *sub_arr = (int *) malloc(sub_n * sizeof(int));
-    for (int j = 0; j < sub_n; j++) {
-      sub_arr[j] = arr[i*sub_n+j];
-    }
-
     package_subarray *psa = (package_subarray *) malloc(1 * sizeof(package_subarray));
-
-    psa[0].sub_arr = sub_arr;
+    psa[0].sub_arr = arr+(i*sub_n);
     psa[0].length = sub_n;
     int thread_status = pthread_create(&thread_arr[i], NULL, &find_min_and_max, (void*)psa);
     if (thread_status != 0) {
