@@ -90,8 +90,15 @@ int main(int argc, char** argv) {
   for (int i=0; i<nprocs; i++) {
     int sub_n = n/nprocs;
     package_subarray *psa = (package_subarray *) malloc(1 * sizeof(package_subarray));
-    psa[0].sub_arr = arr+(i*sub_n);
-    psa[0].length = sub_n;
+    if (n%nprocs == 0 && !i) {
+      psa[0].sub_arr = arr+(i*sub_n);
+      psa[0].length = sub_n;
+    }
+    else {
+      psa[0].sub_arr = arr+(i*sub_n);
+      psa[0].length = sub_n+(n%nprocs);
+    }
+
     int thread_status = pthread_create(&thread_arr[i], NULL, &find_min_and_max, (void*)psa);
     if (thread_status != 0) {
       printf("ERROR CREATE THREAD\n");

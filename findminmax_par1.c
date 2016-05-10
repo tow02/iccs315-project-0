@@ -92,8 +92,12 @@ int main(int argc, char** argv) {
 
       else if (pid_array[i] == 0) { // child process
         int sub_n = n/nprocs;
-        result_array[i] = find_min_and_max(arr+(i*sub_n), sub_n);
-
+        if (n%nprocs == 0 && !i) {
+          result_array[i] = find_min_and_max(arr+(i*sub_n), sub_n);
+        }
+        else {
+          result_array[i] = find_min_and_max(arr+(i*sub_n), sub_n+(n%nprocs));
+        }
         /* Child process closes up input side of pipe */
         close_status = close(fd[i][0]);
         if (close_status == -1) {
