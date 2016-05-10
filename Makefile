@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g -Wall -std=c99 -D_BSD_SOURCE
+CFLAGS = -g -O0 -Wall -std=c99 -D_BSD_SOURCE
 
 all: clean findminmax_seq findminmax_par1 findminmax_par2
 
